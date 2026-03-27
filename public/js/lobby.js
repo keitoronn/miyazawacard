@@ -1,5 +1,4 @@
 const socket = io({
-  transports: ['websocket', 'polling'],
   reconnection: true,
   reconnectionAttempts: 10,
   reconnectionDelay: 1000
@@ -16,11 +15,16 @@ let socketReady = false;
 socket.on('connect', () => {
   console.log('Lobby socket connected');
   socketReady = true;
+  const status = document.getElementById('connection-status');
+  status.textContent = '✅ サーバーに接続済み';
+  status.style.color = '#4caf50';
 });
 
 socket.on('connect_error', (err) => {
   console.error('Connection error:', err.message);
-  showError('サーバーに接続できません。リロードしてください。');
+  const status = document.getElementById('connection-status');
+  status.textContent = '❌ サーバーに接続できません。リロードしてください。';
+  status.style.color = '#f44';
 });
 
 function showError(msg) {
