@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Card Battle</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <!-- Waiting Room -->
+  <div id="waiting-screen" class="waiting-room">
+    <div class="waiting-card">
+      <h2>ルームコード</h2>
+      <div id="waiting-room-code" class="waiting-code" title="クリックでコピー"></div>
+      <p style="color:#666; font-size:0.85rem; margin-bottom:16px;">クリックしてコードをコピー</p>
+      <div id="player-slots" class="player-slots"></div>
+      <p class="waiting-dots" style="color:#888; margin-top:16px;">プレイヤーを待っています</p>
+    </div>
+  </div>
+
+  <!-- Game Screen -->
+  <div id="game-screen" class="game-container" style="display:none;">
+    <div class="top-bar">
+      <div class="round-info">ラウンド <span id="round-number">1</span></div>
+      <div id="room-code-top" class="room-code-display" title="クリックでコピー"></div>
+    </div>
+
+    <div id="scoreboard" class="scoreboard"></div>
+
+    <div id="table-area" class="table-area"></div>
+
+    <div class="hand-area">
+      <div class="hand-label">あなたの手札 (合計: <span id="selected-sum">0</span>)</div>
+      <div id="hand-cards" class="hand-cards"></div>
+      <div class="submit-area">
+        <button id="submit-btn" class="btn-submit">カードを出す</button>
+        <div class="submit-hint">カードを選択して提出 (0枚でもOK)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Round Result Overlay -->
+  <div id="result-overlay" class="overlay" style="display:none;">
+    <div class="overlay-card fade-in">
+      <div id="result-title" class="overlay-title"></div>
+      <div id="result-grid" class="result-grid"></div>
+      <div id="steal-info" style="display:none;"></div>
+      <button id="result-continue-btn" class="btn btn-primary" style="margin-top:16px; display:none;">次のラウンドへ</button>
+    </div>
+  </div>
+
+  <!-- Game Over Overlay -->
+  <div id="gameover-overlay" class="overlay" style="display:none;">
+    <div class="overlay-card fade-in">
+      <div id="gameover-title" class="game-over-title"></div>
+      <div id="final-scores" class="final-scores"></div>
+      <button id="play-again-btn" class="btn btn-primary">もう一度プレイ</button>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/renderer.js"></script>
+  <script src="/js/socket-client.js"></script>
+  <script src="/js/game.js"></script>
+</body>
+</html>
