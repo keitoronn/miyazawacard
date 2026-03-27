@@ -22,7 +22,10 @@
   <div id="game-screen" class="game-container" style="display:none;">
     <div class="top-bar">
       <div class="round-info">ラウンド <span id="round-number">1</span></div>
-      <div id="room-code-top" class="room-code-display" title="クリックでコピー"></div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <div id="room-code-top" class="room-code-display" title="クリックでコピー"></div>
+        <button class="help-btn" onclick="document.getElementById('rules-overlay').classList.add('visible')">？</button>
+      </div>
     </div>
 
     <div id="scoreboard" class="scoreboard"></div>
@@ -55,6 +58,36 @@
       <div id="gameover-title" class="game-over-title"></div>
       <div id="final-scores" class="final-scores"></div>
       <button id="play-again-btn" class="btn btn-primary">もう一度プレイ</button>
+    </div>
+  </div>
+
+  <!-- Rules Overlay -->
+  <div id="rules-overlay" class="rules-overlay" onclick="if(event.target===this)this.classList.remove('visible')">
+    <div class="rules-panel">
+      <h2>📜 ルール説明</h2>
+      <h3>🎴 基本ルール</h3>
+      <ul>
+        <li>4人対戦のカードバトルゲームです</li>
+        <li>各プレイヤーに <strong>1, 2, 4, 8, 16</strong> の5枚のカードが配られます</li>
+        <li>ラウンドごとに手札から好きな枚数（0枚でもOK）を選んで出します</li>
+      </ul>
+      <h3>🏆 勝敗の判定</h3>
+      <ul>
+        <li>出したカードの合計が <strong>最も大きいプレイヤーが勝利</strong></li>
+        <li>ただし最大値が複数人で同じ場合、そのラウンドは <strong>誰も勝ちになりません</strong></li>
+        <li><strong>3勝</strong>先取で試合終了です</li>
+      </ul>
+      <h3>🃏 カード奪取</h3>
+      <ul>
+        <li>勝者がいるラウンドで、<strong>2位のプレイヤー</strong>（1人だけの場合）がそのラウンドで場に出た全カードからランダムで1枚獲得します</li>
+        <li>2位が複数人の場合は奪取は発生しません</li>
+      </ul>
+      <h3>⚡ 手札について</h3>
+      <ul>
+        <li>使ったカードは基本的に <strong>補充されません</strong></li>
+        <li>全員の手札がなくなった場合、<strong>最も勝利数が多いプレイヤーの勝ち</strong>です（複数人なら全員勝ち）</li>
+      </ul>
+      <button class="rules-close-btn" onclick="document.getElementById('rules-overlay').classList.remove('visible')">閉じる</button>
     </div>
   </div>
 

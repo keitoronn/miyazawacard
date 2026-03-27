@@ -642,3 +642,102 @@ body {
 .reveal-card {
   animation: revealCards 0.4s ease;
 }
+
+/* Help Button & Rules Panel */
+.help-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid #555;
+  background: transparent;
+  color: #aaa;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.help-btn:hover {
+  border-color: #e94560;
+  color: #e94560;
+}
+
+.rules-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.rules-overlay.visible {
+  display: flex;
+}
+
+.rules-panel {
+  background: #16213e;
+  border-radius: 16px;
+  padding: 28px 24px;
+  max-width: 480px;
+  width: 90%;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+
+.rules-panel h2 {
+  color: #e94560;
+  font-size: 1.3rem;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.rules-panel h3 {
+  color: #ffd700;
+  font-size: 0.95rem;
+  margin: 14px 0 6px;
+}
+
+.rules-panel p,
+.rules-panel li {
+  color: #ccc;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.rules-panel ul {
+  padding-left: 18px;
+  margin-bottom: 6px;
+}
+
+.rules-panel li {
+  margin-bottom: 4px;
+}
+
+.rules-close-btn {
+  display: block;
+  margin: 18px auto 0;
+  padding: 10px 36px;
+  border: none;
+  border-radius: 8px;
+  background: #e94560;
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.rules-close-btn:hover {
+  background: #c73652;
+}
