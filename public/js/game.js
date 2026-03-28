@@ -20,6 +20,7 @@
   let pendingGameOver = null; // queued game-over during result animation
   let timerInterval = null; // client-side timer display interval
   let timerEndTime = null; // when the current timer expires
+  let timerTotalDuration = 60000; // total duration from server
 
   // Init socket
   SocketClient.init();
@@ -157,6 +158,7 @@
   // === Timer ===
   function startTimer(durationMs) {
     stopTimer();
+    timerTotalDuration = durationMs;
     timerEndTime = Date.now() + durationMs;
     const timerSection = document.getElementById('timer-section');
     timerSection.style.display = '';
@@ -178,8 +180,7 @@
     if (!timerEndTime) return;
     const remaining = Math.max(0, timerEndTime - Date.now());
     const seconds = Math.ceil(remaining / 1000);
-    const totalDuration = 30000;
-    const pct = (remaining / totalDuration) * 100;
+    const pct = (remaining / timerTotalDuration) * 100;
 
     const bar = document.getElementById('timer-bar');
     const text = document.getElementById('timer-text');
