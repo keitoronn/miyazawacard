@@ -52,7 +52,7 @@ const SocketClient = {
       'room-created', 'room-joined', 'player-joined', 'player-left',
       'player-disconnected', 'player-reconnected',
       'game-start', 'game-update', 'round-result',
-      'game-over', 'error'
+      'timer-start', 'game-over', 'error'
     ];
 
     for (const event of events) {

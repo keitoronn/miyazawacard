@@ -18,6 +18,8 @@
   let showingResult = false; // true while round result animation is playing
   let pendingGameUpdate = null; // queued game-update during result animation
   let pendingGameOver = null; // queued game-over during result animation
+  let timerInterval = null; // client-side timer display interval
+  let timerEndTime = null; // when the current timer expires
 
   // Init socket
   SocketClient.init();
@@ -105,6 +107,7 @@
   SocketClient.on('round-result', (result) => {
     hasSubmitted = false;
     selectedIndices.clear();
+    stopTimer();
     showingResult = true;
     playerNames = result.playerNames || playerNames;
     Renderer.renderRoundResult(result, playerNames, myIndex, () => {
@@ -148,6 +151,62 @@
     }
     if (currentView) {
       Renderer.renderScoreboard(currentView.players, playerNames, myIndex);
+    }
+  });
+
+  // === Timer ===
+  function startTimer(durationMs) {
+    stopTimer();
+    timerEndTime = Date.now() + durationMs;
+    const timerSection = document.getElementById('timer-section');
+    timerSection.style.display = '';
+    updateTimerDisplay();
+    timerInterval = setInterval(updateTimerDisplay, 500);
+  }
+
+  function stopTimer() {
+    if (timerInterval) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+    }
+    timerEndTime = null;
+    const timerSection = document.getElementById('timer-section');
+    if (timerSection) timerSection.style.display = 'none';
+  }
+
+  function updateTimerDisplay() {
+    if (!timerEndTime) return;
+    const remaining = Math.max(0, timerEndTime - Date.now());
+    const seconds = Math.ceil(remaining / 1000);
+    const totalDuration = 30000;
+    const pct = (remaining / totalDuration) * 100;
+
+    const bar = document.getElementById('timer-bar');
+    const text = document.getElementById('timer-text');
+
+    bar.style.width = pct + '%';
+    text.textContent = `残り ${seconds}秒`;
+
+    bar.className = 'timer-bar';
+    text.className = 'timer-text';
+    if (seconds <= 5) {
+      bar.classList.add('danger');
+      text.classList.add('danger');
+    } else if (seconds <= 10) {
+      bar.classList.add('warning');
+    }
+
+    if (remaining <= 0) {
+      stopTimer();
+    }
+  }
+
+  SocketClient.on('timer-start', (data) => {
+    if (!hasSubmitted) {
+      startTimer(data.duration);
+    } else {
+      // Already submitted, hide timer
+      stopTimer();
     }
   });
 
@@ -220,6 +279,7 @@
   document.getElementById('submit-btn').addEventListener('click', () => {
     if (hasSubmitted) return;
     hasSubmitted = true;
+    stopTimer();
     const cards = [...selectedIndices].map(idx => currentView.myHand[idx]);
     SocketClient.emit('submit-cards', { cards });
 

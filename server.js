@@ -3,7 +3,7 @@ const http = require('http');
 const { Server } = require('socket.io');
 const path = require('path');
 const GameRoom = require('./game/GameRoom');
-const { ROOM_CODE_LENGTH, ROOM_CLEANUP_MS } = require('./game/constants');
+const { ROOM_CODE_LENGTH, ROOM_CLEANUP_MS, ROUND_TIMER_MS } = require('./game/constants');
 
 const app = express();
 const server = http.createServer(app);
@@ -54,7 +54,54 @@ function broadcastToRoom(room, event, data) {
   }
 }
 
+function startRoundTimer(room) {
+  // Clear any existing timer
+  if (room.roundTimer) {
+    clearTimeout(room.roundTimer);
+  }
+
+  const timerStart = Date.now();
+  room.roundTimerStart = timerStart;
+
+  // Broadcast timer start to all players
+  broadcastToRoom(room, 'timer-start', {
+    duration: ROUND_TIMER_MS
+  });
+
+  room.roundTimer = setTimeout(() => {
+    room.roundTimer = null;
+    room.roundTimerStart = null;
+    if (!room.gameState || room.gameState.phase !== 'SELECTING') return;
+
+    // Auto-submit empty cards for everyone who hasn't submitted
+    let anyAutoSubmitted = false;
+    for (let i = 0; i < room.players.length; i++) {
+      if (room.gameState.submissions[i] === null) {
+        room.gameState.submitCards(i, []);
+        anyAutoSubmitted = true;
+      }
+    }
+
+    if (anyAutoSubmitted) {
+      room.gameState.phase = 'RESOLVING';
+      setTimeout(() => {
+        room.gameState.phase = 'SELECTING';
+        handleRoundResolution(room);
+      }, 500);
+    }
+  }, ROUND_TIMER_MS);
+}
+
+function clearRoundTimer(room) {
+  if (room.roundTimer) {
+    clearTimeout(room.roundTimer);
+    room.roundTimer = null;
+    room.roundTimerStart = null;
+  }
+}
+
 function handleRoundResolution(room) {
+  clearRoundTimer(room);
   const result = room.gameState.resolveRound();
   const names = room.getPlayerNames();
   result.roundResult.playerNames = names;
@@ -84,6 +131,7 @@ function handleRoundResolution(room) {
 
   // Next round
   broadcastGameView(room);
+  startRoundTimer(room);
 }
 
 function scheduleRoomCleanup(room) {
@@ -216,6 +264,7 @@ io.on('connection', (socket) => {
         players: room.getPlayerNames()
       });
       broadcastGameView(room);
+      startRoundTimer(room);
     }
   });
 
@@ -251,6 +300,7 @@ io.on('connection', (socket) => {
       players: currentRoom.getPlayerNames()
     });
     broadcastGameView(currentRoom);
+    startRoundTimer(currentRoom);
   });
 
   socket.on('disconnect', () => {

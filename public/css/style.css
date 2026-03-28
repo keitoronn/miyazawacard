@@ -145,7 +145,9 @@ body {
   display: flex;
   flex-direction: column;
   height: 100vh;
+  height: 100dvh;
   padding: 12px;
+  overflow: hidden;
 }
 
 /* Top Bar */
@@ -224,12 +226,14 @@ body {
 
 /* Table Area */
 .table-area {
-  flex: 1;
+  flex: 1 1 0;
   display: grid;
   grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
   gap: 12px;
   margin-bottom: 12px;
   min-height: 0;
+  overflow: hidden;
 }
 
 .player-zone {
@@ -240,7 +244,8 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 120px;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .player-zone.is-me {
@@ -740,4 +745,319 @@ body {
 
 .rules-close-btn:hover {
   background: #c73652;
+}
+
+/* Timer Bar */
+.timer-bar-container {
+  width: 100%;
+  height: 6px;
+  background: #2a2a4a;
+  border-radius: 3px;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+
+.timer-bar {
+  height: 100%;
+  background: #4caf50;
+  border-radius: 3px;
+  transition: width 0.5s linear, background 0.5s;
+}
+
+.timer-bar.warning {
+  background: #ff9800;
+}
+
+.timer-bar.danger {
+  background: #e94560;
+}
+
+.timer-text {
+  text-align: center;
+  font-size: 0.8rem;
+  color: #aaa;
+  margin-bottom: 4px;
+}
+
+.timer-text.danger {
+  color: #e94560;
+  font-weight: 700;
+}
+
+/* ===== Mobile Responsive ===== */
+@media (max-width: 600px) {
+  /* Lobby */
+  .game-title {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 0.95rem;
+    margin-bottom: 20px;
+  }
+
+  .lobby-card {
+    padding: 20px 16px;
+  }
+
+  /* Game Container */
+  .game-container {
+    padding: 6px;
+    height: 100dvh;
+    overflow: hidden;
+  }
+
+  /* Top Bar */
+  .top-bar {
+    padding: 6px 10px;
+    margin-bottom: 6px;
+    border-radius: 8px;
+  }
+
+  .round-info {
+    font-size: 0.95rem;
+  }
+
+  .room-code-display {
+    font-size: 0.75rem;
+  }
+
+  .help-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 0.85rem;
+  }
+
+  /* Scoreboard */
+  .scoreboard {
+    gap: 4px;
+    margin-bottom: 6px;
+  }
+
+  .score-item {
+    padding: 4px 8px;
+    min-width: 70px;
+    border-radius: 6px;
+  }
+
+  .score-name {
+    font-size: 0.65rem;
+    margin-bottom: 2px;
+  }
+
+  .score-wins {
+    font-size: 1rem;
+  }
+
+  .score-submitted {
+    font-size: 0.6rem;
+    top: 2px;
+    right: 4px;
+  }
+
+  /* Table Area - constrain on mobile so hand area stays visible */
+  .table-area {
+    gap: 4px;
+    margin-bottom: 4px;
+    min-height: 0;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .player-zone {
+    padding: 6px;
+    border-radius: 8px;
+    min-height: 0;
+  }
+
+  .zone-name {
+    font-size: 0.7rem;
+    margin-bottom: 2px;
+  }
+
+  .zone-name {
+    font-size: 0.75rem;
+    margin-bottom: 4px;
+  }
+
+  .zone-status {
+    font-size: 0.75rem;
+  }
+
+  /* Hand Area - ensure it's always visible */
+  .hand-area {
+    padding: 8px 8px;
+    border-radius: 8px;
+    flex-shrink: 0;
+  }
+
+  .hand-label {
+    font-size: 0.75rem;
+    margin-bottom: 6px;
+  }
+
+  .hand-cards {
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+
+  /* Cards - smaller on mobile */
+  .card {
+    width: 46px;
+    height: 64px;
+    font-size: 1.1rem;
+    border-radius: 6px;
+    border-width: 2px;
+  }
+
+  .card.selected {
+    transform: translateY(-8px);
+  }
+
+  .card:hover {
+    transform: none; /* no hover on touch devices */
+  }
+
+  .card-small {
+    width: 36px;
+    height: 50px;
+    font-size: 0.85rem;
+  }
+
+  /* Submit */
+  .btn-submit {
+    padding: 10px 32px;
+    font-size: 0.9rem;
+  }
+
+  .submit-hint {
+    font-size: 0.7rem;
+  }
+
+  /* Timer */
+  .timer-text {
+    font-size: 0.7rem;
+  }
+
+  /* Overlays */
+  .overlay-card {
+    padding: 20px 16px;
+    border-radius: 12px;
+    width: 95%;
+  }
+
+  .overlay-title {
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+  }
+
+  .result-grid {
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  .result-row {
+    padding: 6px 8px;
+    border-radius: 6px;
+    flex-wrap: wrap;
+  }
+
+  .result-name {
+    font-size: 0.8rem;
+    min-width: 60px;
+  }
+
+  .result-cards {
+    gap: 3px;
+  }
+
+  .result-sum {
+    font-size: 1rem;
+    min-width: 30px;
+  }
+
+  /* Game Over */
+  .game-over-title {
+    font-size: 1.4rem;
+    margin-bottom: 14px;
+  }
+
+  .final-score-row {
+    padding: 6px 12px;
+    font-size: 0.9rem;
+  }
+
+  /* Waiting Room */
+  .waiting-card {
+    padding: 20px 16px;
+  }
+
+  .waiting-code {
+    font-size: 2rem;
+    letter-spacing: 6px;
+  }
+
+  .player-slots {
+    gap: 8px;
+    margin: 16px 0;
+  }
+
+  .player-slot {
+    padding: 10px 8px;
+  }
+
+  .slot-label {
+    font-size: 0.65rem;
+  }
+
+  .slot-name {
+    font-size: 0.85rem;
+  }
+
+  /* Rules Panel */
+  .rules-panel {
+    padding: 20px 16px;
+    max-height: 80vh;
+  }
+
+  .rules-panel h2 {
+    font-size: 1.1rem;
+  }
+
+  .rules-panel h3 {
+    font-size: 0.85rem;
+  }
+
+  .rules-panel li {
+    font-size: 0.8rem;
+  }
+}
+
+/* Very small screens (iPhone SE etc.) */
+@media (max-width: 380px) {
+  .card {
+    width: 40px;
+    height: 56px;
+    font-size: 1rem;
+  }
+
+  .card-small {
+    width: 32px;
+    height: 44px;
+    font-size: 0.75rem;
+  }
+
+  .score-item {
+    min-width: 60px;
+    padding: 3px 6px;
+  }
+
+  .score-wins {
+    font-size: 0.85rem;
+  }
+
+  .player-zone {
+    min-height: 56px;
+    padding: 6px;
+  }
 }
