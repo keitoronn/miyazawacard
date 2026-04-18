@@ -55,41 +55,7 @@ function broadcastToRoom(room, event, data) {
 }
 
 function startRoundTimer(room) {
-  // Clear any existing timer
-  if (room.roundTimer) {
-    clearTimeout(room.roundTimer);
-  }
-
-  const timerStart = Date.now();
-  room.roundTimerStart = timerStart;
-
-  // Broadcast timer start to all players
-  broadcastToRoom(room, 'timer-start', {
-    duration: ROUND_TIMER_MS
-  });
-
-  room.roundTimer = setTimeout(() => {
-    room.roundTimer = null;
-    room.roundTimerStart = null;
-    if (!room.gameState || room.gameState.phase !== 'SELECTING') return;
-
-    // Auto-submit empty cards for everyone who hasn't submitted
-    let anyAutoSubmitted = false;
-    for (let i = 0; i < room.players.length; i++) {
-      if (room.gameState.submissions[i] === null) {
-        room.gameState.submitCards(i, []);
-        anyAutoSubmitted = true;
-      }
-    }
-
-    if (anyAutoSubmitted) {
-      room.gameState.phase = 'RESOLVING';
-      setTimeout(() => {
-        room.gameState.phase = 'SELECTING';
-        handleRoundResolution(room);
-      }, 500);
-    }
-  }, ROUND_TIMER_MS);
+  // Timer disabled
 }
 
 function clearRoundTimer(room) {
